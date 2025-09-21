@@ -1,20 +1,16 @@
-﻿using HarmonyLib;
-using Steamworks;
+﻿namespace SSNC;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace SSNC;
-
+/// <summary> Class for all SSNC UI. </summary>
 public class UI
 {
+    /// <summary> Dictionary for supporting slots and getting to their folders. </summary>
     public static Dictionary<string, string> supportedSlot = new()
     {
         {"Slot 1", "Slot1"},
@@ -25,8 +21,9 @@ public class UI
         {"Slot M", "Slot11"},
     };
 
+    /// <summary> Loads the UI. </summary>
     public static void Load()
-    { // game plan: enable and disable grid so it fucking loads the things and then put the shit on that ffs please and do this on each scene load
+    {
         GameObject OptionsMenu = Tools.ObjFindIncludeInactive("Canvas/OptionsMenu");
         GameObject SaveSlots = Tools.ObjFindIncludeInactive("Canvas/OptionsMenu/Save Slots");
         GameObject Grid = Tools.ObjFindIncludeInactive("Canvas/OptionsMenu/Save Slots/Grid");
@@ -578,31 +575,3 @@ public struct Pos(Vector2 Pos, Vector2 _Scale, Vector2 Minium, Vector2 Maxium)
     public static Pos Rect(Rect rect, Vector2? OVERRIDE_POSITION = null, Vector2? OVERRIDE_SIZE = null, Vector2? OVERRIDE_MIN = null, Vector2? OVERRIDE_MAX = null) =>
         new(OVERRIDE_POSITION ?? rect.position, OVERRIDE_SIZE ?? rect.size, OVERRIDE_MIN ?? rect.min, OVERRIDE_MAX ?? rect.max);
 }
-
-/*/// <summary> Bool but like better for me. (pronounced "n-oo-lea")</summary>
-public struct Nulea
-{
-    public bool b;
-    public string s
-    {
-        get => b.ToString();
-
-        set
-        {
-
-        }
-    };
-
-    public Nulea(bool b) => this.b = b;
-    public Nulea(string s) : this(Boolean.TryParse(s, out var b)) { }
-
-    // i want this to return nul after its been inverted like bool = !bool; but ~Nulea 
-    public static Nulea operator ~(Nulea nul) => nul.Not();
-
-    public static implicit operator bool(Nulea nul) => nul.b;
-    public static implicit operator Nulea(bool b) => new(b);
-    public static implicit operator Nulea(string s) => new(s);
-
-    public Nulea Not() => 
-        this = !this;
-}*/

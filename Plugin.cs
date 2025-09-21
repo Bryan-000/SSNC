@@ -1,28 +1,14 @@
 ﻿namespace SSNC;
 
 using BepInEx;
-using BepInEx.Bootstrap;
 using BepInEx.Logging;
-using Discord;
 using HarmonyLib;
-using Logic;
-using plog;
-using plog.Helpers;
-using Steamworks.ServerList;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ULTRAKILL.Cheats;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI.Extensions.ColorPicker;
 
 [BepInPlugin("Bryan_-000-.SSNC", "SSNC", "1.0.0")]
 public class PluginLoader : BaseUnityPlugin
