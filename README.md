@@ -4,6 +4,7 @@
 #### SSNC(SaveSlotNameChanger) is a mod for the game [ULTRAKILL](http://devilmayquake.com/), which allows u to rename your save slots. (cuz for some fuckass reason u cant in the base game)
 
 ## Installation
+#### [you need BepInEx for this mod to work.]
 Download the newest .zip from releases on the github page.
 ### For R2ModManager/ThunderStoreModManager
 * Step 1: Open Settings from the left bar, inside your mod profile of choice.
