@@ -353,7 +353,6 @@ public class Logger
         /// <summary> Takes a type and finds its color in this style as a hex. </summary>
         /// <param name="type">The Type.</param>
         /// <returns>The color of the Type in this style.</returns>
-#pragma warning disable IDE0251 // Make member 'readonly'
         public string GetColorOfType(Type type) =>
             $"<color=#{(
                 type.IsPrimitive ? Primitive // if type is primitive, such as int, float, char, bool.
@@ -364,8 +363,6 @@ public class Logger
                 : type.IsValueType ? Struct // if the type is a struct, such as DateTime, TimeSpan, Guid
                 : type.IsSubclassOf(typeof(Delegate)) || type == typeof(Delegate) ? Delegate // if the type is a delegate, like Action, Func<>, Predicate<>
                 : FallBack).ToString()}>"; // fallback if neither of those
-#pragma warning restore IDE0251 // Make member 'readonly'
-        // fuck you just because it CAN be readonly doesnt mean i WANT it to be readonly u piece of sh9it
 
         /// <summary> Takes a type and finds its color in the chosen style as a hex. </summary>
         /// <param name="type">The Type.</param>
@@ -383,39 +380,14 @@ public class Logger
     /// <param name="a">Alpha value.</param>
     public struct Hex(byte r, byte g, byte b, byte a)
     {
-        public static bool fuckoffupieceofshit = false;
         /// <summary> Red value. </summary>
-        public byte Red = r;
+        public byte r = r;
         /// <summary> Green value. </summary>
-        public byte Green = g;
+        public byte g = g;
         /// <summary> Blue value. </summary>
-        public byte Blue = b;
+        public byte b = b;
         /// <summary> Alpha value. </summary>
-        public byte Alpha = a;
-        /// <summary> Red value. </summary>
-        public byte r
-        {
-            readonly get => Red;
-            set { Red = value; }
-        }
-        /// <summary> Green value. </summary>
-        public byte g
-        {
-            readonly get => Green;
-            set { Green = value; }
-        }
-        /// <summary> Blue value. </summary>
-        public byte b
-        {
-            readonly get => Blue;
-            set { Blue = value; }
-        }
-        /// <summary> Alpha value. </summary>
-        public byte a
-        {
-            readonly get => Alpha;
-            set { Alpha = value; }
-        }
+        public byte a = a;
 
         /// <summary> Red Color. </summary>
         public static readonly Hex red = "#FF0000";
@@ -575,10 +547,10 @@ public class Logger
         public static int Compare(Hex left, Hex right)
         {
             int count = 0;
-            if (left.Red > right.Red) count++;
-            if (left.Green > right.Green) count++;
-            if (left.Blue > right.Blue) count++;
-            if (left.Alpha > right.Alpha) count++;
+            if (left.r > right.r) count++;
+            if (left.g > right.g) count++;
+            if (left.b > right.b) count++;
+            if (left.a > right.a) count++;
             return count;
         }
 
@@ -593,13 +565,13 @@ public class Logger
         /// <param name="colorByte">The color byte to be darken'd.</param>
         /// <returns>The colorByte once it has been darken'd by the alpha.</returns>
         public byte DarkenBasedOnAlpha(byte? colorByte) =>
-            DarkenBasedOnAlpha(colorByte ?? 255, Alpha);
+            DarkenBasedOnAlpha(colorByte ?? 255, a);
 
         /// <summary> Converts an RGBA Hex into RGB. (darkens based on alpha. it also still has alpha channel, just it doesnt do anything.)</summary>
         /// <param name="h">Hex to convert.</param>
         /// <returns>The new converted Hex.</returns>
         public static Hex ToRGB(Hex h) =>
-            new(h.DarkenBasedOnAlpha(h.Red), h.DarkenBasedOnAlpha(h.Green), h.DarkenBasedOnAlpha(h.Blue));
+            new(h.DarkenBasedOnAlpha(h.r), h.DarkenBasedOnAlpha(h.g), h.DarkenBasedOnAlpha(h.b));
 
         /// <summary> Converts this RGBA Hex into RGB. (darkens based on alpha. it also still has alpha channel, just it doesnt do anything.)</summary>
         /// <returns>The new converted Hex.</returns>
@@ -642,14 +614,14 @@ public class Logger
         /// <returns>Whether the object is a Hex and if its equal to this Hex.</returns>
         public override readonly bool Equals(object A)
         {
-            if (A is not Hex a) return false;
-            return a.r == r && a.g == g && a.b == b && a.a == Alpha;
+            if (A is not Hex h) return false;
+            return h.r == r && h.g == g && h.b == b && h.a == a;
         }
 
         /// <summary> Gets the hash code or whatever.. (idfk what this is i just know i need to override it for == and != operators)</summary>
         /// <returns>The hash code..</returns>
         public override readonly int GetHashCode() =>
-            HashCode.Combine(Red, Green, Blue, Alpha);
+            HashCode.Combine(r, g, b, a);
 
         /// <summary> Converts the Hex into a string. </summary>
         /// <param name="format">Format to be converted into.</param>
@@ -662,27 +634,27 @@ public class Logger
             string sub(byte val, string format) => val.ToString($"{format[0]}{point}");
             string product = format switch
             {
-                "HEX" => $"{Red:X2}{Green:X2}{Blue:X2}{Alpha:X2}",
-                "A" => $"{Alpha:D3}", // 255
-                "rgb" => $"{Red:D} {Green:D} {Blue:D}", // 1 249 198
-                "RGB" => $"{Red:D3}{Green:D3}{Blue:D3}", // 001249198
-                "rgba" => $"{Red:D} {Green:D} {Blue:D} {Alpha:D}", // 1 249 198 255
-                "RGBA" => $"{Red:D3}{Green:D3}{Blue:D3}{Alpha:D3}", // 001249198255
-                "#AA" => $"{Alpha:X2}", // FF
-                "#RGB" => $"{Red.ToString("X2")[0]}{Green.ToString("X2")[0]}{Blue.ToString("X2")[0]}",// 0FC
-                "#RGBA" => $"{Red.ToString("X2")[0]}{Green.ToString("X2")[0]}{Blue.ToString("X2")[0]}{Alpha.ToString("X2")[0]}", // 0FCF
-                "#RRGGBB" => $"{Red:X2}{Green:X2}{Blue:X2}", // 01F9C6
-                "#RRGGBBAA" => $"{Red:X2}{Green:X2}{Blue:X2}{Alpha:X2}", // 01F9C6FF
-                "G" => $"{sub(Red, "G")}{sub(Green, "G")}{sub(Blue, "G")}{sub(Alpha, "G")}",
-                "D" => $"{sub(Red, "D")} {sub(Green, "D")} {sub(Blue, "D")} {sub(Alpha, "D")}",
-                "X" => $"{sub(Red, "X")}{sub(Green, "X")}{sub(Blue, "X")}{sub(Alpha, "X")}",
-                "x" => $"{sub(Red, "x")}{sub(Green, "x")}{sub(Blue, "x")}{sub(Alpha, "x")}",
-                "N" => $"{sub(Red, "N")}{sub(Green, "N")}{sub(Blue, "N")}{sub(Alpha, "N")}",
-                "F" => $"{sub(Red, "F")}{sub(Green, "F")}{sub(Blue, "F")}{sub(Alpha, "F")}",
-                "E" => $"{sub(Red, "E")}{sub(Green, "E")}{sub(Blue, "E")}{sub(Alpha, "E")}",
-                "P" => $"{sub(Red, "P")}{sub(Green, "P")}{sub(Blue, "P")}{sub(Alpha, "P")}",
-                "C" => $"{sub(Red, "C")}{sub(Green, "C")}{sub(Blue, "C")}{sub(Alpha, "C")}",
-                _ => $"{Red:X2}{Green:X2}{Blue:X2}{Alpha:X2}"
+                "HEX" => $"{r:X2}{g:X2}{b:X2}{a:X2}",
+                "A" => $"{a:D3}", // 255
+                "rgb" => $"{r:D} {g:D} {b:D}", // 1 249 198
+                "RGB" => $"{r:D3}{g:D3}{b:D3}", // 001249198
+                "rgba" => $"{r:D} {g:D} {b:D} {a:D}", // 1 249 198 255
+                "RGBA" => $"{r:D3}{g:D3}{b:D3}{a:D3}", // 001249198255
+                "#AA" => $"{a:X2}", // FF
+                "#RGB" => $"{r.ToString("X2")[0]}{g.ToString("X2")[0]}{b.ToString("X2")[0]}",// 0FC
+                "#RGBA" => $"{r.ToString("X2")[0]}{g.ToString("X2")[0]}{b.ToString("X2")[0]}{a.ToString("X2")[0]}", // 0FCF
+                "#RRGGBB" => $"{r:X2}{g:X2}{b:X2}", // 01F9C6
+                "#RRGGBBAA" => $"{r:X2}{g:X2}{b:X2}{a:X2}", // 01F9C6FF
+                "G" => $"{sub(r, "G")}{sub(g, "G")}{sub(b, "G")}{sub(a, "G")}",
+                "D" => $"{sub(r, "D")} {sub(g, "D")} {sub(b, "D")} {sub(a, "D")}",
+                "X" => $"{sub(r, "X")}{sub(g, "X")}{sub(b, "X")}{sub(a, "X")}",
+                "x" => $"{sub(r, "x")}{sub(g, "x")}{sub(b, "x")}{sub(a, "x")}",
+                "N" => $"{sub(r, "N")}{sub(g, "N")}{sub(b, "N")}{sub(a, "N")}",
+                "F" => $"{sub(r, "F")}{sub(g, "F")}{sub(b, "F")}{sub(a, "F")}",
+                "E" => $"{sub(r, "E")}{sub(g, "E")}{sub(b, "E")}{sub(a, "E")}",
+                "P" => $"{sub(r, "P")}{sub(g, "P")}{sub(b, "P")}{sub(a, "P")}",
+                "C" => $"{sub(r, "C")}{sub(g, "C")}{sub(b, "C")}{sub(a, "C")}",
+                _ => $"{r:X2}{g:X2}{b:X2}{a:X2}"
             };
             return product;
         }
@@ -695,8 +667,7 @@ public class Logger
         public static implicit operator string(Hex h) 
         {
             Plugin.Log.Debug("active implicit string opeerator");
-            if (!fuckoffupieceofshit) return h.ToString("HEX");
-            else return $"{h.Red:X2}{h.Green:X2}{h.Blue:X2}{h.Alpha:X2}";
+            return h.ToString("HEX");
         }
 
         /// <summary> Implicit operator so strings can be used like Hex's. </summary>
@@ -723,28 +694,23 @@ public class Logger
         /// <summary> Implicit operator so Hex's can be used like intergers. </summary>
         /// <param name="h">The Hex to convert into an interger.</param>
         /// <returns>The Hex as an interger.</returns>
-        public static implicit operator int(Hex h) =>
-            int.Parse(h, System.Globalization.NumberStyles.HexNumber);
+        public static implicit operator uint(Hex h) =>
+            (uint)h.r << 24 | (uint)h.g << 16 | (uint)h.b << 8 | h.a;
 
         /// <summary> Implicit operator so intergers can be used like Hex's. </summary>
         /// <param name="h">The interger to convert into an Hex.</param>
         /// <returns>The interger as an Hex.</returns>
-        public static implicit operator Hex(int i)
-        {
-            string hexI = i.ToString("X2");
-            bool Is(params int[] poss) {
-                foreach (int pos in poss) if (hexI.Length == pos) return true;
-                return false;
-            }
-            if (!Is(2, 3, 4, 6, 8)) hexI = $"0{hexI}";
-
-            return hexI;
-        }
+        public static implicit operator Hex(uint i) => new(
+            r: (byte)(i >> 24),
+            g: (byte)(i >> 16),
+            b: (byte)(i >> 8),
+            a: (byte)i
+        );
 
         /// <summary> Implicit operator so Hex's can be used like Color's. </summary>
         /// <param name="h">The Hex to convert into a Color.</param>
         public static implicit operator Color(Hex h) => 
-            new((h/255f)[0], (h/255f)[1], (h/255f)[2], (h/255f)[3]);
+            new(h.r/255f, h.g/255f, h.b/255f, h.a/255f);
 
         /// <summary> Implicit operator so Color's can be used like Hex's. </summary>
         /// <param name="h">The Color to convert into a Hex.</param>
@@ -758,7 +724,7 @@ public class Logger
         /// <summary> Implicit operator so Hex's can be used like UniversalColor's. (Darkens colors based on alpha due to UniversalColor's not supporting alpha channels) </summary>
         /// <param name="h">The Hex to convert into a UniversalColor.</param>
         public static implicit operator UniversalColor(Hex h) => 
-            new(h.DarkenBasedOnAlpha(h.Red), h.DarkenBasedOnAlpha(h.Green), h.DarkenBasedOnAlpha(h.Blue));
+            new(h.DarkenBasedOnAlpha(h.r), h.DarkenBasedOnAlpha(h.g), h.DarkenBasedOnAlpha(h.b));
 
         /// <summary> Implicit operator so UniversalColor's can be used like Hex's. </summary>
         /// <param name="c">The UniversalColor to convert into a Hex.</param>
