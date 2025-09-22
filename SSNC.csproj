@@ -8,6 +8,7 @@
 	  https://nuget.bepinex.dev/v3/index.json;
 	  https://nuget.samboy.dev/v3/index.json
 	</RestoreAdditionalProjectSources>
+  <NoWarn>IDE0130, IDE0251, IDE0062</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
