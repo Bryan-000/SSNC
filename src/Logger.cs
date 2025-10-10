@@ -244,11 +244,11 @@ public class Logger
 
     /// <summary> Gets the name of a method with ✨colors✨. (example: <color=#BBB><color=#0FC><color=#FFF>COAT</color>.<color=#FFF>Net</color>.<color=#4CB>Networking</color>.<color=#DDA>Send</color><color=#FFF>(COAT.Content</color>.<color=#FFF><color=#9DC>PacketType</color> <color=#9DF>packetType</color>, System</color>.<color=#FFF><color=#5CB>Action</color><COAT.IO</color>.<color=#FFF><color=#5CB>Writer</color> <color=#9DF>Writer</color>> <color=#9DF>cons</color>, System</color>.<color=#FFF><color=#5CB>Action</color><System</color>.<color=#FFF><color=#8BF>IntPtr</color> <color=#9DF>IntPtr</color>, System</color>.<color=#FFF><color=#8BF>Int32</color> <color=#9DF>Int32</color>> <color=#9DF>result</color>, System</color>.<color=#FFF><color=#8BF>Int32</color> <color=#9DF>size</color>);</color></color></color>)</summary>
     /// <param name="Class">The type that the method is within.</param>
-    /// <param name="Method">The name of the method to get a full name of with ✨colors✨.</param>
+    /// <param name="MethodName">The name of the method to get a full name of with ✨colors✨.</param>
     /// <param name="Style">The style of how Primitives, Classes, Interfaces, Enum's, Structs, and Delegates look.</param>
     /// <returns>The methods name with ✨colors✨. (such as for this it'd be SSNC.Logger.GetNameOfMethod() but with ✨colors✨)</returns>
-    public string GetNameOfMethod(Type type, string Method, Stylizer? Style = null) =>
-        GetNameOfMethod(type.GetMethod(Method, (BindingFlags)60), Style);
+    public string GetNameOfMethod(Type type, string MethodName, Stylizer? Style = null) =>
+        GetNameOfMethod(type.GetMethod(MethodName, (BindingFlags)60), Style);
 
     /// <summary> Gets the name of a method with ✨colors✨. </summary>
     /// <param name="method">The method to get a name of with ✨colors✨.</param>
@@ -262,7 +262,7 @@ public class Logger
             return "ARGUMENTNULLEXCEPTION WHILE TRYING TO GETNAMEOFMETHOD (stack trace: " + StackTraceUtility.ExtractStackTrace() + " )";
         }
 
-        Stylizer style = Style ?? new();
+        Stylizer style = Style ?? new("47D");
         Type Class = method?.DeclaringType ?? typeof(Logger);
         string parameterHasArguments(ParameterInfo param) =>
             param.ParameterType.GetGenericArguments().Length == 0 ? string.Empty :
