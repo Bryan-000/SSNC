@@ -261,7 +261,6 @@ public struct Nulea(byte r, byte g, byte b, byte a)
     /// <returns>The string defition of this Nulea</returns>
     public readonly string ToString(string format = "X2")
     {
-        Plugin.Log.Debug("active tostring(format) " + format);
         if (format[0] != 'x' || format != "rgb" || format != "rgba") format = format.ToUpper();
         string point = format.Length == 1 ? "" : format.Substring(1);
         string sub(byte val, string format) => val.ToString($"{format[0]}{point}");
