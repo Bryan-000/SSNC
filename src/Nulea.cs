@@ -61,6 +61,19 @@ public struct Nulea(byte r, byte g, byte b, byte a)
     /// <param name="a">Alpha value.</param>
     public Nulea(int r, int g, int b, int a) : this((byte)r, (byte)g, (byte)b, (byte)a) { }
 
+    /// <summary> Makes a Nulea with 3 Floats. </summary>
+    /// <param name="r">Red value.</param>
+    /// <param name="g">Green value.</param>
+    /// <param name="b">Blue value.</param>
+    public Nulea(float r, float g, float b) : this((byte)MathF.Round(Math.Clamp(r * 255f, 0f, 255f)), (byte)MathF.Round(Math.Clamp(g * 255f, 0f, 255f)), (byte)MathF.Round(Math.Clamp(b * 255f, 0f, 255f))) { }
+
+    /// <summary> Makes a Nulea with 4 Floats. </summary>
+    /// <param name="r">Red value.</param>
+    /// <param name="g">Green value.</param>
+    /// <param name="b">Blue value.</param>
+    /// <param name="a">Alpha value.</param>
+    public Nulea(float r, float g, float b, float a) : this((byte)MathF.Round(Math.Clamp(r * 255f, 0f, 255f)), (byte)MathF.Round(Math.Clamp(g * 255f, 0f, 255f)), (byte)MathF.Round(Math.Clamp(b * 255f, 0f, 255f)), (byte)MathF.Round(Math.Clamp(a * 255f, 0f, 255f))) { }
+
     /// <summary> Makes a Nulea with 3 Bytes. </summary>
     /// <param name="r">Red value.</param>
     /// <param name="g">Green value.</param>
@@ -80,6 +93,13 @@ public struct Nulea(byte r, byte g, byte b, byte a)
     /// <param name="b">Blue value.</param>
     /// <param name="a">Alpha value.</param>
     public Nulea(int? r = null, int? g = null, int? b = null, int? a = null) : this(r ?? 0, g ?? 0, b ?? 0, a ?? 255) { }
+
+    /// <summary> Makes a Nulea with either one of 4 Floats. ((r, g, &amp; b: default to 0f) (a: default to 1f))</summary>
+    /// <param name="r">Red value.</param>
+    /// <param name="g">Green value.</param>
+    /// <param name="b">Blue value.</param>
+    /// <param name="a">Alpha value.</param>
+    public Nulea(float? r = null, float? g = null, float? b = null, float? a = null) : this(r ?? 0f, g ?? 0f, b ?? 0f, a ?? 1f) { }
 
     /// <summary> Adds each color channel in the Nulea by each color channel in another Nulea. </summary>
     /// <param name="a">Nulea to be Added.</param>
