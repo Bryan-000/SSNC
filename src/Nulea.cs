@@ -2,8 +2,6 @@
 
 using plog.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 /// <summary> Struct used by Stylizer to pick colors. </summary>
@@ -294,7 +292,9 @@ public struct Nulea(byte r, byte g, byte b, byte a)
         return product;
     }
 
-    public override string ToString() { Plugin.Log.Debug("active tostring()"); return ToString("HEX"); }
+    /// <summary> Turns a Nulea into a string. </summary>
+    /// <returns>The Nulea formatted as a string.</returns>
+    public override string ToString() => ToString("HEX");
 
     /// <summary> Implicit operator so Nulea's can be used like strings. </summary>
     /// <param name="h">The Nulea to convert into a string.</param>
@@ -337,6 +337,19 @@ public struct Nulea(byte r, byte g, byte b, byte a)
         b: (byte)(i >> 8),
         a: (byte)i
     );
+
+    /// <summary> Implicit operator so Nulea's can be used like bytes. </summary>
+    /// <param name="h">The Nulea to convert into 4 bytes.</param>
+    /// <returns>The Nulea as an Nulea.</returns>
+    public static implicit operator byte[](Nulea h) => [h.r, h.g, h.b, h.a];
+
+    /// <summary> Implicit operator so bytes can be used like Nulea's. </summary>
+    /// <param name="b">The bytes to convert into an Nulea.</param>
+    /// <returns>The bytes as an Nulea.</returns>
+    public static implicit operator Nulea(byte[] b) {
+        byte? check(int i) => b.Length > i + 1 ? b[i] : null;
+        return new(check(0), check(1), check(2), check(3));
+    }
 
     /// <summary> Implicit operator so Nulea's can be used like Color's. </summary>
     /// <param name="h">The Nulea to convert into a Color.</param>

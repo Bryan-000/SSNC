@@ -59,7 +59,7 @@ public class Logger
         Info($"Logger created...");
         Tags = tags;
         Info($"Tags set...", eT: Tags);
-
+        
         this.WriteToFile = WriteToFile;
         this.logfilepath = logfilepath ?? Path.Combine(Path.GetDirectoryName(Plugin.Instance.Location), "logs", $"Log {DateTime.Now:MM-dd-yyyy hh-mm-ss tt}.txt");
     }
@@ -285,7 +285,7 @@ public class Logger
         Exception,
         Extreme,
         CommandLine,
-        Config // result: <color=#0FC><color=#FFF>COAT</color>.<color=#FFF>Net</color>.<color=#00000000>Networking</color>.<color=#00000000>Send</color><color=#FFF>(COAT.Content</color>.<color=#FFF><color=#00000000>PacketType</color> <color=#00000000>packetType</color>, System</color>.<color=#FFF><color=#00000000>Action</color><COAT.IO</color>.<color=#FFF><color=#00000000>Writer</color> <color=#00000000>Writer</color>> <color=#00000000>cons</color>, System</color>.<color=#FFF><color=#00000000>Action</color><System</color>.<color=#FFF><color=#00000000>IntPtr</color> <color=#00000000>IntPtr</color>, System</color>.<color=#FFF><color=#00000000>Int32</color> <color=#00000000>Int32</color>> <color=#00000000>result</color>, System</color>.<color=#FFF><color=#00000000>Int32</color> <color=#00000000>size</color>);</color></color>
+        Config
     }
 
     /// <summary> Translates SSNC.Logger.Level into plog.Models.Level. </summary>
